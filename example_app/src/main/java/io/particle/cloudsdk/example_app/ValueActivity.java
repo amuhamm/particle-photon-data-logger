@@ -38,27 +38,25 @@ public class ValueActivity extends AppCompatActivity {
         findViewById(R.id.refresh_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // the Async library was created by Particle
-                Async.executeAsync(ParticleCloud.get(ValueActivity.this), new Async.ApiWork<ParticleCloud, String[]>() {
+                //...
+                // Do network work on background thread
+                Async.executeAsync(ParticleCloud.get(ValueActivity.this), new Async.ApiWork<ParticleCloud, Object>() {
                     @Override
-                    public String[] callApi(ParticleCloud ParticleCloud) throws ParticleCloudException, IOException {
+                    public Object callApi(ParticleCloud ParticleCloud) throws ParticleCloudException, IOException {
                         ParticleDevice device = ParticleCloud.getDevice(getIntent().getStringExtra(ARG_DEVICEID));
-                        String[] variable = {""};
+                        Object variable;
                         try {
-                            variable[0] = device.getVariable("voltage").toString();
-                            variable[1] = "8:41:04";
+                            variable = device.getVariable("voltage"); // get the "voltage" variable from the particle cloud
                         } catch (ParticleDevice.VariableDoesNotExistException e) {
                             Toaster.l(ValueActivity.this, e.getMessage());
-                            variable[0] = "-1";
+                            variable = -1;
                         }
                         return variable;
                     }
 
-
                     @Override
-                    public void onSuccess(String[] i) { // this goes on the main thread
-                        tv.setText(i[0] +  " V, " + i[1]);
+                    public void onSuccess(Object i) { // this goes on the main thread
+                        tv.setText(i.toString());
                     }
 
                     @Override
