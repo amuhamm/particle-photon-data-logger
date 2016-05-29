@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:rowCount="4"
+    android:columnCount="4">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Voltage:"
+        android:id="@+id/label1"
+        android:layout_marginLeft="80dp"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Time:"
+        android:id="@+id/label2"
+        android:layout_below="@+id/label1"
+        android:layout_alignRight="@+id/label1"
+        android:layout_alignEnd="@+id/label1"
+        android:layout_marginTop="33dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="1.705235 V"
+        android:id="@+id/tvVoltage"
+        android:layout_alignTop="@+id/label1"
+        android:layout_toRightOf="@+id/label1"
+        android:layout_toEndOf="@+id/label1"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="6:47:23"
+        android:id="@+id/tvTime"
+        android:layout_alignBottom="@+id/label2"
+        android:layout_alignLeft="@+id/tvVoltage"
+        android:layout_alignStart="@+id/tvVoltage" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Historical Data:"
+        android:id="@+id/label3"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/button2"
+        android:layout_toStartOf="@+id/button2" />
+
+    <Button
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:text="Activate"
+        android:id="@+id/button"
+        android:layout_above="@+id/label3"
+        android:layout_alignRight="@+id/label2"
+        android:layout_alignEnd="@+id/label2"
+        android:layout_marginBottom="28dp" />
+
+    <Button
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:text="Deactivate"
+        android:id="@+id/button2"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_alignTop="@+id/button"
+        android:layout_alignLeft="@+id/tvTime"
+        android:layout_alignStart="@+id/tvTime" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/label3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Time: 6:47:22 | Voltage: 1.714869 V"
+            android:id="@+id/tvHistory"
+            android:gravity="center_horizontal|top"
+            android:layout_alignTop="@+id/scrollView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </ScrollView>
+
+</RelativeLayout>
