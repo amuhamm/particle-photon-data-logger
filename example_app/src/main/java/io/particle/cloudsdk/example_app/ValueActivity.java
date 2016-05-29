@@ -3,6 +3,7 @@ package io.particle.cloudsdk.example_app;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -19,11 +20,37 @@ public class ValueActivity extends AppCompatActivity {
 
     private static final String ARG_VALUE = "ARG_VALUE";
     private static final String ARG_DEVICEID = "ARG_DEVICEID";
-
+    public static final int START_STOP_COUNT = 1;
+    private final static int INTERVAL = 1000 * 3; //3 seconds
     private TextView tv;
     private TextView tvHistory;
     private TextView tvVoltage;
     private TextView tvTime;
+
+
+    Handler mHandler = new Handler();
+    Runnable mHandlerTask = new Runnable()
+    {
+        @Override
+        public void run() {
+            onStartClicked();
+            mHandler.postDelayed(mHandlerTask, INTERVAL);
+        }
+    };
+
+    void startRepeatingTask()
+    {
+        mHandlerTask.run();
+    }
+
+    void stopRepeatingTask()
+    {
+        mHandler.removeCallbacks(mHandlerTask);
+    }
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,39 +58,44 @@ public class ValueActivity extends AppCompatActivity {
         setContentView(R.layout.activity_value);
         tv = (TextView) findViewById(R.id.value);
         tvVoltage = (TextView) findViewById(R.id.tvVoltage);
-        tvTime = (TextView) findViewById(R.id.tvTime);
-        tvHistory = (TextView) findViewById(R.id.tvHistory);
         tv.setText(String.valueOf(getIntent().getIntExtra(ARG_VALUE, 0)));
 
         findViewById(R.id.refresh_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //...
-                // Do network work on background thread
-                Async.executeAsync(ParticleCloud.get(ValueActivity.this), new Async.ApiWork<ParticleCloud, Object>() {
-                    @Override
-                    public Object callApi(ParticleCloud ParticleCloud) throws ParticleCloudException, IOException {
-                        ParticleDevice device = ParticleCloud.getDevice(getIntent().getStringExtra(ARG_DEVICEID));
-                        Object variable;
-                        try {
-                            variable = device.getVariable("voltage"); // get the "voltage" variable from the particle cloud
-                        } catch (ParticleDevice.VariableDoesNotExistException e) {
-                            Toaster.l(ValueActivity.this, e.getMessage());
-                            variable = -1;
-                        }
-                        return variable;
-                    }
+                    onStartClicked();
+            }
+        });
 
-                    @Override
-                    public void onSuccess(Object i) { // this goes on the main thread
-                        tv.setText(i.toString());
-                    }
+        startRepeatingTask();
 
-                    @Override
-                    public void onFailure(ParticleCloudException e) {
-                        e.printStackTrace();
-                    }
-                });
+    }
+
+    public void onStartClicked(){
+        //...
+        // Do network work on background thread
+        Async.executeAsync(ParticleCloud.get(ValueActivity.this), new Async.ApiWork<ParticleCloud, Object>() {
+            @Override
+            public Object callApi(ParticleCloud ParticleCloud) throws ParticleCloudException, IOException {
+                ParticleDevice device = ParticleCloud.getDevice(getIntent().getStringExtra(ARG_DEVICEID));
+                Object variable;
+                try {
+                    variable = device.getVariable("voltage"); // get the "voltage" variable from the particle cloud
+                } catch (ParticleDevice.VariableDoesNotExistException e) {
+                    Toaster.l(ValueActivity.this, e.getMessage());
+                    variable = -1;
+                }
+                return variable;
+            }
+
+            @Override
+            public void onSuccess(Object i) { // this goes on the main thread
+                tv.setText(i.toString());
+            }
+
+            @Override
+            public void onFailure(ParticleCloudException e) {
+                e.printStackTrace();
             }
         });
     }
@@ -75,6 +107,5 @@ public class ValueActivity extends AppCompatActivity {
 
         return intent;
     }
-
 
 }
