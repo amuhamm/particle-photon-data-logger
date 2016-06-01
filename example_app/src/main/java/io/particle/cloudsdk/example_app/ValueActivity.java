@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 import io.particle.android.sdk.cloud.ParticleCloud;
 import io.particle.android.sdk.cloud.ParticleCloudException;
@@ -20,13 +21,8 @@ public class ValueActivity extends AppCompatActivity {
 
     private static final String ARG_VALUE = "ARG_VALUE";
     private static final String ARG_DEVICEID = "ARG_DEVICEID";
-    public static final int START_STOP_COUNT = 1;
-    private final static int INTERVAL = 1000 * 3; //3 seconds
+    private final static int INTERVAL = 1000 * 2; //2 seconds
     private TextView tv;
-    private TextView tvHistory;
-    private TextView tvVoltage;
-    private TextView tvTime;
-
 
     Handler mHandler = new Handler();
     Runnable mHandlerTask = new Runnable()
@@ -43,27 +39,17 @@ public class ValueActivity extends AppCompatActivity {
         mHandlerTask.run();
     }
 
-    void stopRepeatingTask()
-    {
-        mHandler.removeCallbacks(mHandlerTask);
-    }
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_value);
         tv = (TextView) findViewById(R.id.value);
-        tvVoltage = (TextView) findViewById(R.id.tvVoltage);
         tv.setText(String.valueOf(getIntent().getIntExtra(ARG_VALUE, 0)));
 
         findViewById(R.id.refresh_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    onStartClicked();
+                onStartClicked();
             }
         });
 
@@ -72,7 +58,6 @@ public class ValueActivity extends AppCompatActivity {
     }
 
     public void onStartClicked(){
-        //...
         // Do network work on background thread
         Async.executeAsync(ParticleCloud.get(ValueActivity.this), new Async.ApiWork<ParticleCloud, Object>() {
             @Override
@@ -82,15 +67,22 @@ public class ValueActivity extends AppCompatActivity {
                 try {
                     variable = device.getVariable("voltage"); // get the "voltage" variable from the particle cloud
                 } catch (ParticleDevice.VariableDoesNotExistException e) {
+
+                    //TODO: Need to handle case when Photon times out
                     Toaster.l(ValueActivity.this, e.getMessage());
                     variable = -1;
+
                 }
                 return variable;
             }
 
             @Override
             public void onSuccess(Object i) { // this goes on the main thread
-                tv.setText(i.toString());
+
+                //TODO: Feed graphing api to create live-stream visual
+                DecimalFormat df = new DecimalFormat("#.###");
+                tv.setText(df.format(i).toString() + "V");
+                System.out.println("Voltage: " + df.format(i) + " V, " + i.getClass().getName());
             }
 
             @Override

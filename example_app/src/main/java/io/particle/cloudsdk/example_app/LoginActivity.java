@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 
 import java.io.IOException;
 
@@ -27,8 +26,8 @@ public class LoginActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        final String email = ((EditText) findViewById(R.id.email)).getText().toString();
-                        final String password = ((EditText) findViewById(R.id.password)).getText().toString();
+                        final String email = "ezmoizy11@gmail.com";
+                        final String password = "dragonser";
 
                         // Don't:
                         AsyncTask task = new AsyncTask() {
