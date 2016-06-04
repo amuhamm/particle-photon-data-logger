@@ -83,6 +83,7 @@ public class ValueActivity extends AppCompatActivity {
                 DecimalFormat df = new DecimalFormat("#.###");
                 tv.setText(df.format(i).toString() + "V");
                 System.out.println("Voltage: " + df.format(i) + " V, " + i.getClass().getName());
+
             }
 
             @Override
