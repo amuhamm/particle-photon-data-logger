@@ -33,7 +33,7 @@ public class RealtimeLineChartActivity extends DemoBase implements
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_realtime_linechart);
 
-        mChart = (LineChart) findViewById(R.id.chart1);
+        mChart = (LineChart) findViewById(R.id.chart);
         mChart.setOnChartValueSelectedListener(this);
 
         // no description text
@@ -52,10 +52,10 @@ public class RealtimeLineChartActivity extends DemoBase implements
         mChart.setPinchZoom(true);
 
         // set an alternative background color
-        mChart.setBackgroundColor(Color.LTGRAY);
+        mChart.setBackgroundColor(Color.TRANSPARENT);
 
         LineData data = new LineData();
-        data.setValueTextColor(Color.WHITE);
+        data.setValueTextColor(Color.GRAY);
 
         // add empty data
         mChart.setData(data);
