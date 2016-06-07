@@ -9,12 +9,12 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="io.particle.cloudsdk.example_app.SplashActivity"
-            android:label="@string/app_name" >
+            android:label="Switcht Beta" >
 
         </activity>
         <activity
             android:name="io.particle.cloudsdk.example_app.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="Switcht Beta" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +23,7 @@
         </activity>
         <activity
             android:name="io.particle.cloudsdk.example_app.ValueActivity"
-            android:label="@string/title_activity_value" >
+            android:label="Real time data" >
         </activity>
     </application>
 

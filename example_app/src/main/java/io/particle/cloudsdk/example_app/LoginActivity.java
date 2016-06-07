@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                                     obj = mDevice.getVariable("analogvalue");
                                     Log.d("BANANA", "analogvalue: " + obj);
                                 } catch (ParticleDevice.VariableDoesNotExistException e) {
-                                    Toaster.s(LoginActivity.this, "Error reading variable");
+//                                    Toaster.s(LoginActivity.this, "Error reading variable");
                                     obj = -1;
                                 }
 
@@ -82,21 +82,21 @@ public class LoginActivity extends AppCompatActivity {
                                     String strVariable = mDevice.getStringVariable("stringvalue");
                                     Log.d("BANANA", "stringvalue: " + strVariable);
                                 } catch (ParticleDevice.VariableDoesNotExistException e) {
-                                    Toaster.s(LoginActivity.this, "Error reading variable");
+//                                    Toaster.s(LoginActivity.this, "Error reading variable");
                                 }
 
                                 try {
                                     double dVariable = mDevice.getDoubleVariable("doublevalue");
                                     Log.d("BANANA", "doublevalue: " + dVariable);
                                 } catch (ParticleDevice.VariableDoesNotExistException e) {
-                                    Toaster.s(LoginActivity.this, "Error reading variable");
+//                                    Toaster.s(LoginActivity.this, "Error reading variable");
                                 }
 
                                 try {
                                     int intVariable = mDevice.getIntVariable("analogvalue");
                                     Log.d("BANANA", "int analogvalue: " + intVariable);
                                 } catch (ParticleDevice.VariableDoesNotExistException e) {
-                                    Toaster.s(LoginActivity.this, "Error reading variable");
+//                                    Toaster.s(LoginActivity.this, "Error reading variable");
                                 }
 
                                 return -1;
@@ -112,9 +112,9 @@ public class LoginActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(ParticleCloudException e) {
-                                Toaster.l(LoginActivity.this, e.getBestMessage());
-                                e.printStackTrace();
-                                Log.d("info", e.getBestMessage());
+//                                Toaster.l(LoginActivity.this, e.getBestMessage());
+//                                e.printStackTrace();
+//                                Log.d("info", e.getBestMessage());
                             }
                         });
 

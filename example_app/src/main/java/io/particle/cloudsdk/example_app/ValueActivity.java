@@ -27,7 +27,6 @@ import io.particle.android.sdk.cloud.ParticleCloud;
 import io.particle.android.sdk.cloud.ParticleCloudException;
 import io.particle.android.sdk.cloud.ParticleDevice;
 import io.particle.android.sdk.utils.Async;
-import io.particle.android.sdk.utils.Toaster;
 
 public class ValueActivity extends AppCompatActivity {
 
@@ -36,7 +35,7 @@ public class ValueActivity extends AppCompatActivity {
     private final static int INTERVAL = 1000 * 2; //2 seconds
     private TextView tv;
     private LineChart mChart;
-
+    private Object[] history = {0};
     //--------------------------------------------------------------------------------------------
 
     Handler mHandler = new Handler();
@@ -135,9 +134,16 @@ public class ValueActivity extends AppCompatActivity {
                     variable = device.getVariable("voltage"); // get the "voltage" variable from the particle cloud
                 } catch (ParticleDevice.VariableDoesNotExistException e) {
 
-                    //TODO: Need to handle case when Photon times out
-                    Toaster.l(ValueActivity.this, e.getMessage());
-                    variable = -1;
+                    //Print out error in System.out
+                    System.out.println(e.getMessage());
+
+                    //If error occurs, input last measured voltage
+                    if(history[0] != 0){
+                        variable = history[0];
+                    } else {
+                        //if error occurs when start, set voltage = 0 as default
+                        variable = 0;
+                    }
 
                 }
                 return variable;
@@ -146,7 +152,6 @@ public class ValueActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Object i) { // this goes on the main thread
 
-                //TODO: Feed graphing api to create live-stream visual
                 DecimalFormat df = new DecimalFormat("#.###");
                 addEntry(df, i);
                 tv.setText(df.format(i).toString() + "V");
@@ -164,6 +169,7 @@ public class ValueActivity extends AppCompatActivity {
     private void addEntry(DecimalFormat df, Object i) {
 
         LineData data = mChart.getData();
+        history[0] = i;
 
         if (data != null) {
 
@@ -180,8 +186,8 @@ public class ValueActivity extends AppCompatActivity {
             data.addEntry(new Entry(Float.parseFloat((df.format(i))), set.getEntryCount()), 0);
 
 
-                    // let the chart know it's data has changed
-                    mChart.notifyDataSetChanged();
+            // let the chart know it's data has changed
+            mChart.notifyDataSetChanged();
 
             // limit the number of visible entries
             mChart.setVisibleXRangeMaximum(6);
